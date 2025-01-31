@@ -19,8 +19,10 @@ The <b>GSALocalAccess</b> sript creates a Task Scheduler with the name of <b>GSA
 
 ## How to use the script
 - Download the `GSALocalAccess.ps1` script from [this](https://github.com/mzmaili/GSALocalAccess) GitHub repo.
+- Update `<Enter your Corp Network Name Here>` value of **$CorpNetworkName** parameter
 - Open the script and modify `CorpNetworkName` parameter value to match your corporate network name.
 - Excute the `GSALocalAccess.ps1` script as needed, either directly on the device, via Intune, through Group Policy, or using SCCM.
+
 
 <!--
 ## Manulaly: Run the script as an administrator
