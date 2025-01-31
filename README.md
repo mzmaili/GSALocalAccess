@@ -1,58 +1,39 @@
 # GSALocalAccess Script
-GSALocalAccess script helps Global Secure Access users to disable Private Access on Global Secure Access clinet when they connect to the corporate network, and enable Private Access when they disconnect from the corporate network automatically without user interaction.
+The **GSALocalAccess script** is designed to enhance the user experience for Global Secure Access (GSA) users by seamlessly managing **Private Access** based on network connectivity. This script **automates the enabling and disabling of Private Access** without requiring any user intervention. When a user connects to the corporate network, Private Access is automatically disabled, ensuring smooth internal resource access. Conversely, upon disconnection from the corporate network, Private Access is automatically reactivated, maintaining secure remote connectivity.
 
-# Why its needed/what issue it resoles
-coming from the fact that Global Secure Access users need to bypass Global Secure Access and directly access private applications one they are connected to the corporate network, also, they need to access private applications wheh they are outside the corporate network. enabling/disabling private access on global secure access client becomes challenging. GSALocalAccess script helps recolve this challenge.
+# What challange does GSALocalAccess solve
+Global Secure Access (GSA) users need the flexibility to bypass GSA and directly access private applications when connected to the corporate network while still being able to access these applications when working remotely through GSA. Enabling or disabling private access on the Global Secure Access client presents a significant challenge due to these varying access needs. To resolve this issue, the **GSALocalAccess script** offers a streamlined solution, making it easier to manage private access and ensuring seamless connectivity, whether inside or outside the corporate network.
 
-# How does GSALocalAccess work
-GSALocalAccess sript creates a task schdular with the name of 'GSALocalAccess' under '\Microsoft\GlobalSecureAccess' folder which enables/disabels Private Access by modifying [IsPrivateAccessDisabledByUser](https://learn.microsoft.com/en-us/entra/global-secure-access/how-to-install-windows-client#disable-or-enable-private-access-on-the-client) registry key value as as per the user location weather they are inside or out side the corporate network. GSALocalAccess task scedular triggers once the following eventis  written which is being written once a device connects to a network, wheather using wire cable or wireless:
-Event ID: 10000
-Source: NetworkProfile
-Log Name: Microsoft-Windows-NetworkProfile/Operational
+# How GSALocalAccess works
+The **GSALocalAccess** script creates a **Task Scheduler** entry named **GSALocalAccess** under the **Microsoft\GlobalSecureAccess** folder. This task is responsible for **automatically enabling or disabling Private Access** based on the user's location.
+It achieves this by modifying the [IsPrivateAccessDisabledByUser](https://learn.microsoft.com/en-us/entra/global-secure-access/how-to-install-windows-client#disable-or-enable-private-access-on-the-client) registry value, automatically detecting whether the user is inside or outside the corporate network. The **GSALocalAccess Task Scheduler** is triggered whenever the following event is logged, which occurs each time a device connects to a network, whether via wired or wireless connection:
+
+The <b>GSALocalAccess</b> sript creates a Task Scheduler with the name of <b>GSALocalAccess</b> under <b>Microsoft\GlobalSecureAccess</b> folder which enables/disabels Private Access automatically by modifying [IsPrivateAccessDisabledByUser](https://learn.microsoft.com/en-us/entra/global-secure-access/how-to-install-windows-client#disable-or-enable-private-access-on-the-client) registry value detecting the user location weather they are inside or out side the corporate network. GSALocalAccess task scedular triggers once the following eventis  written which is being written once a device connects to a network, wheather using wire cable or wireless:<br><br>
+<b>Event ID:</b> 10000<br>
+<b>Source:</b> NetworkProfile<br>
+<b>Log Name:</b> Microsoft-Windows-NetworkProfile/Operational
 
 ## Script requirements
 - Global Secure Access Client shoould be installed before running the script.
 - Intune licese, if an IT admin needs to push the script using Intune.
 
-## How to run the script
-- Download the `GSALocalAccess.ps1` script from [this](https://github.com/mzmaili/Get-AzureADUsersLastSignIn) GitHub repo.
+## How to use the script
+- Download the `GSALocalAccess.ps1` script from [this](https://github.com/mzmaili/GSALocalAccess) GitHub repo.
 - Open the script and modify `CorpNetworkName` parameter value to match your corporate network name.
-- Excute the `GSALocalAccess.ps1` script as your per your need; on the device directly, using Intune, using Group Policy, or using System Center Configuration Manager (SCCM).
+- Excute the `GSALocalAccess.ps1` script as needed, either directly on the device, via Intune, through Group Policy, or using SCCM.
 
+<!--
 ## Manulaly: Run the script as an administrator
 ## Using Intune: Follow Intune section
 ## Using Group Policy:
 
-
-## Why is this script useful?
-- To retrieve Azure AD users with their last sign-in details.
-- To generate a CSV report with the result.
-
 ## User experience
-PowerShell console output:  
-![Alt text](https://github.com/mzmaili/Get-AzureADUsersLastSignIn/blob/main/media/PS.png "PowerShell Output")  
-
-CSV output:  
-![Alt text](https://github.com/mzmaili/Get-AzureADUsersLastSignIn/blob/main/media/CSV.png "CSV Output")  
 
 # Frequently asked questions
 ## Does this script change anything?
-No. It just retrieves data.
-
-## Should tenant have a specific Azure AD license?
-Yes, tenant should have an Azure AD Premium license.
-
-## What data does this script retrieves?
-Get-AzureADUsersLastSignIn script retrieves the following details for each user in the tenant:  
-`Object ID, Display Name, User Principal Name, Account Enabled, onPremisesSyncEnabled, Created DateTime (UTC), Last Success Signin (UTC)`
-
-## Can I get users last sign-in details through Get-Azureaduser command?
-No.
+Yes, it creates a **Task Scheduler** entry named **GSALocalAccess** under the **Microsoft\GlobalSecureAccess** folder
 
 ## Does this script require any PowerShell module to be installed?
 No, the script does not require any PowerShell module.
 
-## What does "N/A" value in "Last Success Signin (UTC)" field mean?
-If 'Last Success Signin (UTC)' value is 'N/A', this could be due to one of the following two reasons:
-- The last successful sign-in of a user took place before April 2020.
-- The affected user account was never used for a successful sign-in.
+-->
