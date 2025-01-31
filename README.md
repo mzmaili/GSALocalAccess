@@ -15,7 +15,7 @@ The <b>GSALocalAccess</b> sript creates a Task Scheduler with the name of <b>GSA
 
 ## Script requirements
 - Global Secure Access Client shoould be installed before running the script.
-- Intune licese, if an IT admin needs to push the script using Intune.
+- Intune license, if an IT admin needs to push the script using Intune.
 
 ## How to use the script
 - Download the `GSALocalAccess.ps1` script from [this](https://github.com/mzmaili/GSALocalAccess) GitHub repo.
