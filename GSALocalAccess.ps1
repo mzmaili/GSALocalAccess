@@ -55,6 +55,6 @@ Function CreateGSALocalAccessTask($CorpNetworkName){
 
 }
  
-$CorpNetworkName = "House"
+$CorpNetworkName = "<Enter your Corp Network Name Here>"
  
 CreateGSALocalAccessTask $CorpNetworkName
