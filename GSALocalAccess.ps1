@@ -38,9 +38,6 @@ Function CreateGSALocalAccessTask($CorpNetworkName){
     $Trigger.Enabled = $True
 
 
-    #Run as System
-    $Prin = New-ScheduledTaskPrincipal -UserId "SYSTEM" -RunLevel Highest
-
     #Stop Task if runs more than 60 minutes
     $Timeout = (New-TimeSpan -Seconds 60)
 
@@ -51,13 +48,13 @@ Function CreateGSALocalAccessTask($CorpNetworkName){
     $TaskName = "GSALocalAccess"
 
     #Create the Task
-    $task = New-ScheduledTask -Action $action -principal $Prin -Trigger $Trigger -Settings $settings
+    $task = New-ScheduledTask -Action $action -Trigger $Trigger -Settings $settings
 
     #Register Task
     Register-ScheduledTask -TaskName $TaskName -InputObject $task -TaskPath "\Microsoft\GlobalSecureAccess\" -Force -ErrorAction SilentlyContinue
 
 }
  
-$CorpNetworkName = "<Enter your Corp Network Name Here>"
+$CorpNetworkName = "House"
  
 CreateGSALocalAccessTask $CorpNetworkName
