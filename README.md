@@ -26,20 +26,21 @@ It achieves this by modifying the [IsPrivateAccessDisabledByUser](https://learn.
 1.	Sign in to the [Microsoft Intune admin center](https://intune.microsoft.com/) with the appropriate roles
 2.	Navigate to **Devices** > **Windows** > **Scripts and remediations**
 3. Open **Platform scripts** tab, click on **Add**, to add a new script as the following:
-   - **Basics** tab, Enter a name (e.g., 'GSALocalAccess Script')
-   - **Script settings** tab, select the script location and set all values to **No**
+   - In **Basics** tab, Enter a name (e.g., 'GSALocalAccess Script')
+   - In **Script settings** tab, select the script location and set all values to **No**
      
      ![Alt text](/media/Script_settings.png "Script_settings")
      
-   - **Assignments** tab, click on **Add all devices**.
+   - In **Assignments** tab, click on **Add all devices**.
+   - In **Review + add** tab, click on **Add** button.
 
 <br>
 
 ## Frequently asked questions
-### Does this script change anything?
-Yes, it creates a **Task Scheduler** entry named **GSALocalAccess** under the **Microsoft\GlobalSecureAccess** folder
+#### Does this script change anything?
+Yes, it creates a **Task Scheduler** entry named **GSALocalAccess** under the **Microsoft\GlobalSecureAccess** folder.
 
-### Does this script require any PowerShell module to be installed?
+#### Does this script require any PowerShell module to be installed?
 No, the script does not require any PowerShell module.
 
 <!--
