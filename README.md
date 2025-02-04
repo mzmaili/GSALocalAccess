@@ -23,19 +23,30 @@ The <b>GSALocalAccess</b> sript creates a Task Scheduler with the name of <b>GSA
 - Open the script and modify `CorpNetworkName` parameter value to match your corporate network name.
 - Excute the `GSALocalAccess.ps1` script as needed, either directly on the device, via Intune, through Group Policy, or using SCCM.
 
+## Running the script using Intune
+1.	Sign in to the [Microsoft Intune admin center](https://intune.microsoft.com/) with the appropriate roles
+2.	Navigate to **Devices** > **Windows** > **Scripts and remediations**
+3. Open **Platform scripts** tab, click on **Add**, to add a new script as the following:
+   - **Basics** tab, Enter a name (e.g., 'GSALocalAccess Script')
+   - **Script settings** tab, select the script location and set all values to **No**
+     
+     ![Alt text](/media/Script_settings.png "Script_settings")
+     
+   - **Assignments** tab, click on **Add all devices**.
+
+<br>
+
+## Frequently asked questions
+### Does this script change anything?
+Yes, it creates a **Task Scheduler** entry named **GSALocalAccess** under the **Microsoft\GlobalSecureAccess** folder
+
+### Does this script require any PowerShell module to be installed?
+No, the script does not require any PowerShell module.
 
 <!--
 ## Manulaly: Run the script as an administrator
-## Using Intune: Follow Intune section
 ## Using Group Policy:
 
 ## User experience
-
-# Frequently asked questions
-## Does this script change anything?
-Yes, it creates a **Task Scheduler** entry named **GSALocalAccess** under the **Microsoft\GlobalSecureAccess** folder
-
-## Does this script require any PowerShell module to be installed?
-No, the script does not require any PowerShell module.
 
 -->
