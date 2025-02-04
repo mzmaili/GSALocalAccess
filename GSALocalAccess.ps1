@@ -1,15 +1,16 @@
 ﻿<#
 
 .SYNOPSIS
-    GSALocalAccess V1.2 PowerShell script.
+    GSALocalAccess V1.5 PowerShell script.
 
 .DESCRIPTION
-    GSALocalAccess script helps Global Secure Access users to disable Private Access on Global Secure Access clinet when they connect to the corporate network, 
-    and enable Private Access when they disconnect from the corporate network automatically without user interaction.
+    GSALocalAccess script helps Global Secure Access users to disable Private Access on Global Secure Access clinet when they connect to the corporate network(s), 
+    and enable Private Access when they disconnect from the corporate network(s) automatically without user interaction.
     For more info, visit: https://github.com/mzmaili/GSALocalAccess
 
 .Note
-    Before running the script, make sure to update "<Enter your Corp Network Name Here>" value of $CorpNetworkName parameter.
+    Before running the script, make sure to update "<Enter your Corp Network Name Here>" value of $CorpNetworkName parameter with your network(s).
+    If you have multiple networks, add a comma (,) between each network name like "CorpNetwork1,CorpNetwork2,CorpNetwork3". Otherwise, add a single network name like "OneCorpNetwork".
 
 .AUTHOR:
     Mohammad Zmaili
@@ -23,7 +24,7 @@
 Function CreateGSALocalAccessTask($CorpNetworkName){
     
     # PowerShell script
-    $PSScript = "`$CorpNetworkName = '"+$CorpNetworkName+"';`$NetworkName = if ((Get-WinEvent -FilterHashtable @{Logname='Microsoft-Windows-NetworkProfile/Operational';Id=10000} -MaxEvents 1).message -match 'Name:\s*(\w+)') { `$matches[1] } else { `$null };If (`$NetworkName -eq `$CorpNetworkName){Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Global Secure Access Client' -Name 'IsPrivateAccessDisabledByUser' -Value 1 -force}else{Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Global Secure Access Client' -Name 'IsPrivateAccessDisabledByUser' -Value 0 -force}"
+    $PSScript = "`$CorpNetworks = '"+$CorpNetworkName+"' -split ',';`$NetworkName = if ((Get-WinEvent -FilterHashtable @{Logname='Microsoft-Windows-NetworkProfile/Operational';Id=10000} -MaxEvents 1).message -match 'Name:\s*(\w+)') { `$matches[1] } else { `$null };foreach (`$CorpNetwork in `$CorpNetworks){If (`$NetworkName -eq `$CorpNetwork){Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Global Secure Access Client' -Name 'IsPrivateAccessDisabledByUser' -Value 1 -force;exit}}Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Global Secure Access Client' -Name 'IsPrivateAccessDisabledByUser' -Value 0 -force"
 
     # Define the task action
     $arg = '-NoProfile -ExecutionPolicy Bypass -Command "&{' + $PSScript + '}"'
@@ -58,6 +59,6 @@ Function CreateGSALocalAccessTask($CorpNetworkName){
 }
 
 
-$CorpNetworkName = "<Enter your Corp Network Name Here>"
+$CorpNetworkName = "<Enter your Corp Network Name Here>" # Example "OneCorpNetwork" OR "CorpNetwork1,CorpNetwork2,CorpNetwork3"
 
 CreateGSALocalAccessTask $CorpNetworkName
