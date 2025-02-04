@@ -6,21 +6,20 @@ Global Secure Access (GSA) users need the flexibility to bypass GSA and directly
 
 # How GSALocalAccess works
 The **GSALocalAccess** script creates a **Task Scheduler** named **GSALocalAccess** under the **Microsoft\GlobalSecureAccess** folder. This task is responsible for **automatically enabling or disabling Private Access** based on the user's location.
-It achieves this by modifying the [IsPrivateAccessDisabledByUser](https://learn.microsoft.com/en-us/entra/global-secure-access/how-to-install-windows-client#disable-or-enable-private-access-on-the-client) registry value, automatically detecting whether the user is inside or outside the corporate network. The **GSALocalAccess Task Scheduler** is triggered whenever the following event is logged, which occurs each time a device connects to a network, whether via wired or wireless connection:
+It achieves this by modifying the [IsPrivateAccessDisabledByUser](https://learn.microsoft.com/en-us/entra/global-secure-access/how-to-install-windows-client#disable-or-enable-private-access-on-the-client) registry value, automatically detecting whether the user is inside or outside the corporate network. The **GSALocalAccess Task Scheduler** is triggered whenever the following event is logged, which occurs each time a device connects to a network, whether via wired or wireless connection: <br>
 
-The <b>GSALocalAccess</b> script creates a Task Scheduler with the name of <b>GSALocalAccess</b> under <b>Microsoft\GlobalSecureAccess</b> folder which enables/disables Private Access automatically by modifying [IsPrivateAccessDisabledByUser](https://learn.microsoft.com/en-us/entra/global-secure-access/how-to-install-windows-client#disable-or-enable-private-access-on-the-client) registry value detecting the user location weather they are inside or outside the corporate network. GSALocalAccess task scheduler triggers once the following EventId written which is written once a device connects to a network, whether using wire cable or wireless:<br><br>
 <b>Event ID:</b> 10000<br>
 <b>Source:</b> NetworkProfile<br>
 <b>Log Name:</b> Microsoft-Windows-NetworkProfile/Operational
 
 ## Script requirements
 - Global Secure Access Client should be installed before running the script.
-- Intune license, if an IT admin needs to push the script using Intune.
+- Intune license, if you need to to push the script using Microsoft Intune.
 
 ## How to use the script
 - Download the `GSALocalAccess.ps1` script from [this](https://github.com/mzmaili/GSALocalAccess) GitHub repo.
-- Update `<Enter your Corp Network Name Here>` value of **$CorpNetworkName** parameter
-- Open the script and modify `CorpNetworkName` parameter value to match your corporate network name.
+- Open the script and modify `<Enter your Corp Network Name Here>` value of **$CorpNetworkName** parameter with your network(s).
+   - If you have multiple networks, add a comma (,) between each network name like `"CorpNetwork1,CorpNetwork2,CorpNetwork3"`. Otherwise, add a single network name like `"OneCorpNetwork"`.
 - Execute the `GSALocalAccess.ps1` script as needed, either directly on the device, via Intune, through Group Policy, or using SCCM.
 
 ## Running the script using Intune
