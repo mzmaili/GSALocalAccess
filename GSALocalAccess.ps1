@@ -1,7 +1,7 @@
 ﻿<#
 
 .SYNOPSIS
-    GSALocalAccess V1.0 PowerShell script.
+    GSALocalAccess V1.2 PowerShell script.
 
 .DESCRIPTION
     GSALocalAccess script helps Global Secure Access users to disable Private Access on Global Secure Access clinet when they connect to the corporate network, 
@@ -29,7 +29,7 @@ Function CreateGSALocalAccessTask($CorpNetworkName){
     $arg = '-NoProfile -ExecutionPolicy Bypass -Command "&{' + $PSScript + '}"'
     $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $arg
 
-    #trigger on event id 10000
+    #Trigger on event id 10000
     $CIMTriggerClass = Get-CimClass -ClassName MSFT_TaskEventTrigger -Namespace Root/Microsoft/Windows/TaskScheduler:MSFT_TaskEventTrigger
     $Trigger = New-CimInstance -CimClass $CIMTriggerClass -ClientOnly
     $Trigger.Subscription = @"
@@ -37,24 +37,27 @@ Function CreateGSALocalAccessTask($CorpNetworkName){
 "@
     $Trigger.Enabled = $True
 
+    #Set task principal
+    $Prin = New-ScheduledTaskPrincipal -GroupId "EVERYONE"
 
-    #Stop Task if runs more than 60 minutes
+    #Stop task if runs more than 60 minutes
     $Timeout = (New-TimeSpan -Seconds 60)
 
-    #Additional Settings on the Task:
-    $settings = New-ScheduledTaskSettingsSet -RunOnlyIfNetworkAvailable -StartWhenAvailable -DontStopIfGoingOnBatteries -ExecutionTimeLimit $Timeout
-
-    #Set Name of Task
+    #Set name of task
     $TaskName = "GSALocalAccess"
 
-    #Create the Task
-    $task = New-ScheduledTask -Action $action -Trigger $Trigger -Settings $settings
+    #Other settings on the task:
+    $settings = New-ScheduledTaskSettingsSet -RunOnlyIfNetworkAvailable -StartWhenAvailable -DontStopIfGoingOnBatteries -ExecutionTimeLimit $Timeout
 
-    #Register Task
+    #Create the task
+    $task = New-ScheduledTask -Action $action -principal $Prin -Trigger $Trigger -Settings $settings
+
+    #Register the task
     Register-ScheduledTask -TaskName $TaskName -InputObject $task -TaskPath "\Microsoft\GlobalSecureAccess\" -Force -ErrorAction SilentlyContinue
 
 }
- 
+
+
 $CorpNetworkName = "<Enter your Corp Network Name Here>"
- 
+
 CreateGSALocalAccessTask $CorpNetworkName
