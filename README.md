@@ -34,6 +34,17 @@ It achieves this by modifying the [IsPrivateAccessDisabledByUser](https://learn.
    - In **Assignments** tab, click on **Add all devices**.
    - In **Review + add** tab, click on **Add** button.
 
+# How to Roll Back the Changes
+1.  Remove the **GSALocalAccess** task scheduler by running the following PowerShell command as an Administrator<br>
+```PowerShell
+Unregister-ScheduledTask -TaskName "GSALocalAccess" -TaskPath "\Microsoft\GlobalSecureAccess" -Confirm:$false
+```
+
+2. Remove the **IsPrivateAccessDisabledByUser** registry by running the following PowerShell command<br>
+```PowerShell
+Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Global Secure Access Client" -Name "IsPrivateAccessDisabledByUser" -Force
+```
+
 <br>
 
 ## Frequently asked questions
