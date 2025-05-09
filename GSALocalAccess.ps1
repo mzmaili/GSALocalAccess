@@ -1,7 +1,7 @@
 ﻿<#
 
 .SYNOPSIS
-    GSALocalAccess V1.6 PowerShell script.
+    GSALocalAccess V1.7 PowerShell script.
 
 .DESCRIPTION
     GSALocalAccess script helps Global Secure Access users to disable Private Access on Global Secure Access clinet when they connect to the corporate network(s), 
@@ -24,7 +24,7 @@
 Function CreateGSALocalAccessTask($CorpNetworkName){
     
     # PowerShell script
-    $PSScript = "`$CorpNetworks = '"+$CorpNetworkName+"' -split ',';`$NetworkName = if ((Get-WinEvent -FilterHashtable @{Logname='Microsoft-Windows-NetworkProfile/Operational';Id=10000} -MaxEvents 1).message -match 'Name:\s*(.+)') { `$matches[1] } else { `$null };foreach (`$CorpNetwork in `$CorpNetworks){If (`$NetworkName -eq `$CorpNetwork){Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Global Secure Access Client' -Name 'IsPrivateAccessDisabledByUser' -Value 1 -force;exit}}Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Global Secure Access Client' -Name 'IsPrivateAccessDisabledByUser' -Value 0 -force"
+    $PSScript = "`$CorpNetworks = '"+$CorpNetworkName+"' -split ',';`$NetworkName = if ((Get-WinEvent -FilterHashtable @{Logname='Microsoft-Windows-NetworkProfile/Operational';Id=10000} -MaxEvents 1).message -match 'Name:\s*(.+)') { `$matches[1].Trim() } else { `$null };foreach (`$CorpNetwork in `$CorpNetworks){If (`$NetworkName -eq `$CorpNetwork){Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Global Secure Access Client' -Name 'IsPrivateAccessDisabledByUser' -Value 1 -force;exit}}Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Global Secure Access Client' -Name 'IsPrivateAccessDisabledByUser' -Value 0 -force"
 
     # Define the task action
     $arg = '-NoProfile -ExecutionPolicy Bypass -Command "&{' + $PSScript + '}"'
